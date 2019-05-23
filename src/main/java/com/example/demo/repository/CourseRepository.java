@@ -22,8 +22,18 @@ public class CourseRepository {
                 .build();
 
         courses.add(javaOne);
-    }
 
+      Course javaTwo = Course.builder()
+        .className("Java II")
+        .instructor(new Instructor("Tim", "Cook", "Phd", "TownHall202"))
+        .startDate(new Date("8/1/2018"))
+        .endDate(new Date("12/24/2018"))
+        .timeFrame("1pm-4pm")
+        .build();
+
+      courses.add(javaTwo);
+
+    }
 
     public List<Course> findAllClasses(){
         //链接数据库
@@ -37,10 +47,46 @@ public class CourseRepository {
     }
 
     public List<Course> findCourseByName(String courseName) {
-        if(courseName.equals("Java_I")) {
-            return courses;
+        List<Course> result = new ArrayList<>();
+        courseName = courseName.replace("_"," ");
+        for (Course c: courses)
+        {
+          if (c.getClassName().equals(courseName))
+          {
+            result.add(c);
+          }
         }
 
-        return new ArrayList<Course>();
+        return result;
+    }
+
+  public void deleteCourseByName(String courseName) {
+
+    courseName = courseName.replace("_"," ");
+    for (Course c: courses)
+    {
+      if (c.getClassName().equals(courseName))
+      {
+        courses.remove(c);
+        break;
+      }
+    }
+    }
+
+    public void addCourse (Course c)
+    {
+      courses.add(c);
+    }
+
+    public void updateCourse (Course c)
+    {
+      for(int i=0; i <courses.size(); i ++)
+      {
+
+        if(c.getClassName().equals(courses.get(i).getClassName()))
+        {
+          courses.set(i,c);
+        }
+      }
     }
 }

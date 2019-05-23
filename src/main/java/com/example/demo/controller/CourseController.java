@@ -8,11 +8,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 // single function interface
@@ -42,5 +40,32 @@ public class CourseController {
         List<Course> findedCourse = courseService.searchByCourseName(inputString);
 
         return new ResponseEntity(findedCourse, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/delete/{inputString}", produces = "application/json")
+    public HttpEntity<Course> deleteCourse(@PathVariable("inputString") String inputString) {
+
+      courseService.deleteByCourseName(inputString);
+      List<Course> findedCourse = courseService.findAllCourses();
+
+      return new ResponseEntity(findedCourse, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/post", produces ="application/json")
+    public HttpEntity<Course> addCourse(@RequestBody @NotNull Course c) {
+
+      courseService.addCourse(c);
+      List<Course> findedCourse = courseService.findAllCourses();
+
+      return new ResponseEntity(findedCourse, HttpStatus.OK);
+    }
+
+    @PutMapping(path ="/update", produces ="application/json")
+    public HttpEntity<Course> updateCourse(@RequestBody @NotNull Course c) {
+
+      courseService.updateCourse(c);
+      List<Course> findedCourse = courseService.findAllCourses();
+
+      return new ResponseEntity(findedCourse, HttpStatus.OK);
     }
 }
